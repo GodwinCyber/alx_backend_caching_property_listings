@@ -7,8 +7,10 @@ from django.http import JsonResponse
 @cache_page(60 * 15)
 def property_list(request):
     '''List all the properties'''
-    properties = Property.objects.all().values(
+    properties = Property.objects.all()
+    
+    property_data = properties.values(
         "id", "title", "description", "price", "location", "created_at"
     )
 
-    return JsonResponse({"properties": list(properties)})
+    return JsonResponse({"properties": property_data})
