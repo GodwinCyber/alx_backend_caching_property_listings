@@ -34,10 +34,10 @@ def get_redis_cache_metrics():
 
         # Extract values
         keyspace_hits = info.get("keyspace_hits", 0)
-        keysapce_misses = info.get("keyspace_misses", 0)
+        keyspace_misses = info.get("keyspace_misses", 0)
 
         # Calcualate totals and hit ratio
-        total_requests = keyspace_hits + keysapce_misses
+        total_requests = keyspace_hits + keyspace_misses
         if total_requests > 0:
             hit_ratio = keyspace_hits / total_requests
             hit_ratio_percentage = hit_ratio * 100
@@ -47,7 +47,7 @@ def get_redis_cache_metrics():
 
         metrics = {
             'keyspace_hits': keyspace_hits,
-            'keyspace_misses': keysapce_misses,
+            'keyspace_misses': keyspace_misses,
             'total': total_requests,
             'hit_ratio': round(hit_ratio, 4),
             'hit_ratio_percentage': round(hit_ratio_percentage, 2),
@@ -61,7 +61,7 @@ def get_redis_cache_metrics():
 
         return metrics
     except Exception as e:
-        logger.info(f"Error retrieving Redis cache metrics: {e}")
+        logger.error(f"Error retrieving Redis cache metrics: {e}")
 
         return {
             'keyspace_hits': 0,
